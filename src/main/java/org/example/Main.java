@@ -23,17 +23,18 @@ public class Main {
 
         startThreadsForInc();
     }
-// Воно не інкрементує далі а кожен поток робить + 1 до 0 і виходить 1 в кожному потоці
-    static void startThreadsForInc(){
+    static  int  value = 0;
+// так виніс за межі методу змінну результат не консистентний кожен раз при додаванні join то інкрементує по черзі
+    static void startThreadsForInc() throws InterruptedException {
         for (int i = 0; i < 10 ; i++){
             Thread threadForInc = new Thread(
                     () -> {
-                        int value = 0;
                         value++;
                         System.out.println("Incremented value: " + value + " " + Thread.currentThread().getName());
                     }
             );
             threadForInc.start();
+            //threadForInc.join();
         }
 
         Thread chickenThread = new Thread(() ->
